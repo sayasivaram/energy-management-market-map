@@ -5,7 +5,7 @@
  *   1. Create a Google Sheet, then Extensions → Apps Script. Replace the sample code with this file.
  *   2. Change TEAM_PASSCODE below to a passcode for your group, then Save.
  *   3. Deploy → New deployment → type "Web app". Execute as: Me. Who has access: Anyone. Deploy and authorise.
- *   4. Copy the Web app URL (ends in /exec) into the dashboard: Investor Notes & Settings → Team sharing.
+ *   4. Copy the Web app URL (ends in /exec) into the dashboard: Settings & Sharing tab → Team sharing.
  *
  * Anyone with the web-app URL can READ the map data. Only requests carrying the passcode can CHANGE it.
  * The script creates three tabs: "Companies", "To Research" and "Settings". You can also edit rows
