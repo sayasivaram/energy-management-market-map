@@ -6,51 +6,43 @@
 <title>Energy Management Services — Market Map</title>
 <style>
 :root {
-  color-scheme: light;
-  --page: #f9f9f7;
-  --surface: #fcfcfb;
-  --surface-2: #f3f2ee;
-  --ink: #0b0b0b;
-  --ink-2: #52514e;
-  --muted: #898781;
-  --grid: #e1e0d9;
-  --axis: #c3c2b7;
-  --border: rgba(11,11,11,0.10);
-  --t1: #2a78d6;   /* Incumbent */
-  --t2: #eb6834;   /* Key player */
-  --t3: #1baf7a;   /* Up-and-comer */
-  --accent: #2a78d6;
-  --danger: #d03b3b;
-  --good: #006300;
-  --quad-hover: rgba(42,120,214,0.05);
-  --shadow: 0 10px 30px rgba(0,0,0,0.14);
-}
-@media (prefers-color-scheme: dark) {
-  :root:where(:not([data-theme="light"])) {
-    color-scheme: dark;
-    --page: #0d0d0d; --surface: #1a1a19; --surface-2: #232321;
-    --ink: #ffffff; --ink-2: #c3c2b7; --muted: #898781;
-    --grid: #2c2c2a; --axis: #383835; --border: rgba(255,255,255,0.10);
-    --t1: #3987e5; --t2: #d95926; --t3: #199e70; --accent: #3987e5; --good: #0ca30c;
-    --quad-hover: rgba(57,135,229,0.08); --shadow: 0 10px 30px rgba(0,0,0,0.55);
-  }
-}
-:root[data-theme="dark"] {
-  color-scheme: dark;
-  --page: #0d0d0d; --surface: #1a1a19; --surface-2: #232321;
-  --ink: #ffffff; --ink-2: #c3c2b7; --muted: #898781;
-  --grid: #2c2c2a; --axis: #383835; --border: rgba(255,255,255,0.10);
-  --t1: #3987e5; --t2: #d95926; --t3: #199e70; --accent: #3987e5; --good: #0ca30c;
-  --quad-hover: rgba(57,135,229,0.08); --shadow: 0 10px 30px rgba(0,0,0,0.55);
+  color-scheme: light;            /* light mode only */
+  /* Palette: #17301C · #50C9CE · #72A1E5 · #9883E5 · #FCD3DE */
+  --page: #f7f9f7;
+  --surface: #ffffff;
+  --surface-2: #f2f5f2;
+  --ink: #17301c;
+  --ink-2: #4b5d50;
+  --muted: #7f8e83;
+  --grid: #e1e8e2;
+  --axis: #c2cdc4;
+  --border: rgba(23,48,28,0.12);
+  --t1: #17301c;   /* Incumbent    — dark green */
+  --t2: #9883e5;   /* Key player   — purple     */
+  --t3: #50c9ce;   /* Up-and-comer — teal       */
+  --blue: #72a1e5;
+  --pink: #fcd3de;
+  --brand: #17301c;       /* buttons, selected tabs, titles */
+  --brand-hover: #0e1f12;
+  --on-brand: #ffffff;
+  --brand-soft: #fcd3de;  /* soft highlights */
+  --accent: #2f63b8;      /* link text: a deeper shade of #72A1E5 so it stays readable */
+  --danger: #c0392b;
+  --good: #2e7d32;
+  --quad-hover: rgba(114,161,229,0.08);
+  --shadow: 0 10px 30px rgba(23,48,28,0.14);
 }
 
 * { box-sizing: border-box; }
 html, body { margin: 0; background: var(--page); color: var(--ink);
   font: 14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
+.tab-title { color: var(--brand); }
+.prose h3, .card h2 { color: var(--brand); }
+.btn:focus-visible, .seg button:focus-visible { outline-color: var(--brand); }
 button, input, select, textarea { font: inherit; color: inherit; }
 a { color: var(--accent); }
 
-header.top { display: flex; align-items: flex-end; gap: 24px; flex-wrap: wrap;
+header.top { border-top: 4px solid; border-image: linear-gradient(90deg, #50c9ce, #72a1e5, #9883e5, #fcd3de) 1; display: flex; align-items: flex-end; gap: 24px; flex-wrap: wrap;
   padding: 18px 28px 0; border-bottom: 1px solid var(--grid); background: var(--surface); }
 header.top .titles { flex: 1 1 420px; padding-bottom: 12px; }
 header.top h1 { font-size: 20px; margin: 0; font-weight: 650; letter-spacing: -0.01em; }
@@ -58,7 +50,7 @@ header.top p { margin: 2px 0 0; color: var(--ink-2); font-size: 13px; }
 nav.tabs { display: flex; gap: 2px; }
 nav.tabs button { border: 0; background: none; padding: 10px 14px; cursor: pointer;
   color: var(--ink-2); border-bottom: 2px solid transparent; font-weight: 550; }
-nav.tabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--ink); }
+nav.tabs button[aria-selected="true"] { color: var(--brand); border-bottom-color: var(--brand); }
 nav.tabs button:hover { color: var(--ink); }
 .theme-btn { margin-bottom: 8px; }
 
@@ -68,8 +60,8 @@ section.tab[hidden] { display: none; }
 .btn { border: 1px solid var(--border); background: var(--surface); padding: 6px 12px;
   border-radius: 8px; cursor: pointer; white-space: nowrap; }
 .btn:hover { background: var(--surface-2); }
-.btn.primary { background: var(--ink); color: var(--surface); border-color: var(--ink); }
-.btn.primary:hover { opacity: .88; }
+.btn.primary { background: var(--brand); color: var(--on-brand); border-color: var(--brand); }
+.btn.primary:hover { background: var(--brand-hover); }
 .btn.danger { color: var(--danger); }
 .btn.small { padding: 3px 9px; font-size: 12.5px; }
 .btn:focus-visible, nav.tabs button:focus-visible, .seg button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
@@ -82,7 +74,7 @@ section.tab[hidden] { display: none; }
 .filters input[type="search"] { width: 210px; }
 .chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px;
   border: 1px solid var(--border); background: var(--surface); cursor: pointer; font-size: 13px; user-select: none; }
-.chip input { margin: 0; accent-color: var(--ink); }
+.chip input { margin: 0; accent-color: var(--brand); }
 .chip.off { opacity: .45; }
 .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; flex: none; }
 .spacer { flex: 1; }
@@ -93,7 +85,7 @@ section.tab[hidden] { display: none; }
 .seg { display: inline-flex; border: 1px solid var(--border); border-radius: 9px; overflow: hidden; background: var(--surface); flex-wrap: wrap; }
 .seg button { border: 0; background: none; padding: 6px 12px; cursor: pointer; color: var(--ink-2); font-size: 13px; border-right: 1px solid var(--border); }
 .seg button:last-child { border-right: 0; }
-.seg button[aria-pressed="true"] { background: var(--ink); color: var(--surface); }
+.seg button[aria-pressed="true"] { background: var(--brand); color: var(--on-brand); }
 .seg button .n { color: var(--muted); margin-left: 4px; font-variant-numeric: tabular-nums; }
 .seg button[aria-pressed="true"] .n { color: inherit; opacity: .7; }
 .quad-desc { color: var(--ink-2); font-size: 13px; margin: 0 0 8px; min-height: 1.45em; }
@@ -120,7 +112,7 @@ section.tab[hidden] { display: none; }
 #map.zoomed .node .label { font-size: 12.5px; }
 #map .node:hover .label, #map .node.active .label { fill: var(--ink); }
 #map .node.pulse .bubble { animation: pulse 1.2s ease-out 2; }
-@keyframes pulse { 0% { stroke-width: 2; } 50% { stroke-width: 7; stroke: var(--ink); } 100% { stroke-width: 2; } }
+@keyframes pulse { 0% { stroke-width: 2; } 50% { stroke-width: 7; stroke: var(--blue); } 100% { stroke-width: 2; } }
 
 .back-btn { position: absolute; top: 10px; right: 10px; z-index: 3; }
 .back-btn[hidden] { display: none; }
@@ -217,7 +209,7 @@ aside.drawer.open { transform: none; }
 
 /* To-research list */
 .tab-count { display: inline-block; min-width: 18px; padding: 0 6px; margin-left: 5px; border-radius: 999px; background: var(--surface-2); color: var(--ink-2); font-size: 11.5px; line-height: 18px; text-align: center; font-variant-numeric: tabular-nums; }
-nav.tabs button[aria-selected="true"] .tab-count { background: var(--ink); color: var(--surface); }
+nav.tabs button[aria-selected="true"] .tab-count { background: var(--brand); color: var(--on-brand); }
 .rq-add { margin-bottom: 14px; }
 .rq-add h2 { margin-bottom: 4px; }
 .rq-grid { display: grid; grid-template-columns: 1.1fr 1.3fr 2fr 1.2fr 1.3fr 0.8fr auto; gap: 10px; align-items: end; margin-top: 10px; }
@@ -235,7 +227,7 @@ tr.rq-done td .nm { color: var(--ink-2); }
 td .host { color: var(--muted); font-size: 12px; }
 .empty { padding: 28px 16px; text-align: center; color: var(--muted); }
 /* Team sharing */
-.team-pill { margin-bottom: 8px; display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--border); background: var(--surface); border-radius: 999px; padding: 4px 11px; font-size: 12.5px; color: var(--ink-2); cursor: pointer; }
+.team-pill { margin-bottom: 10px; display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--border); background: var(--surface); border-radius: 999px; padding: 4px 11px; font-size: 12.5px; color: var(--ink-2); cursor: pointer; }
 .team-pill[hidden] { display: none; }
 .team-pill .sd { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); flex: none; }
 .team-pill.ok .sd { background: #0ca30c; }
@@ -251,8 +243,16 @@ td .host { color: var(--muted); font-size: 12px; }
 .tab-sub { margin: 4px 0 0; color: var(--ink-2); font-size: 13.5px; max-width: 780px; line-height: 1.5; }
 .tab-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 /* Collapsible filters */
-.filter-toggle[aria-expanded="true"] { background: var(--surface-2); }
-.filter-toggle .badge { display: inline-block; min-width: 18px; margin-left: 6px; padding: 0 6px; border-radius: 999px; background: var(--ink); color: var(--surface); font-size: 11.5px; line-height: 18px; text-align: center; }
+.filter-toggle[aria-expanded="true"] { background: var(--brand-soft); border-color: var(--brand); color: var(--brand); }
+nav.tabs button[aria-selected="true"] { border-bottom-width: 3px; border-bottom-color: var(--blue); }
+.tab-count { background: var(--pink) !important; color: var(--brand) !important; }
+.filter-toggle .badge { background: var(--blue); color: var(--brand); }
+.seg button[aria-pressed="true"] .n { color: var(--pink); opacity: 1; }
+.tab-head { border-bottom-color: var(--pink); }
+/* hover / selected ring on bubbles: blue, so it shows on the dark-green bubbles too */
+#map .node:hover .bubble, #map .node:focus-visible .bubble, #map .node.active .bubble { stroke: var(--blue) !important; stroke-width: 3; }
+.btn:focus-visible, nav.tabs button:focus-visible, .seg button:focus-visible { outline-color: var(--blue); }
+.filter-toggle .badge { display: inline-block; min-width: 18px; margin-left: 6px; padding: 0 6px; border-radius: 999px; background: var(--brand); color: var(--on-brand); font-size: 11.5px; line-height: 18px; text-align: center; }
 .filter-toggle .badge[hidden] { display: none; }
 .filter-toggle .chev { display: inline-block; margin-left: 6px; transition: transform .15s; }
 .filter-toggle[aria-expanded="true"] .chev { transform: rotate(180deg); }
@@ -284,7 +284,7 @@ details.menu .menu-list .warn { color: var(--danger); }
 .prose > p:first-of-type { font-size: 15px; }
 .settings-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; align-items: start; }
 @media (max-width: 1000px) { .settings-grid { grid-template-columns: 1fr; } }
-.toast { position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--surface); padding: 9px 16px; border-radius: 10px; font-size: 13px; z-index: 60; box-shadow: var(--shadow); }
+.toast { position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%); background: var(--brand-hover); color: var(--on-brand); padding: 9px 16px; border-radius: 10px; font-size: 13px; z-index: 60; box-shadow: var(--shadow); }
 .toast[hidden] { display: none; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 </style>
@@ -304,7 +304,6 @@ details.menu .menu-list .warn { color: var(--danger); }
     <button role="tab" data-tab="settings" aria-selected="false">Settings &amp; Sharing</button>
   </nav>
   <button class="team-pill" id="team-pill" hidden></button>
-  <button class="btn small theme-btn" id="theme-btn" title="Toggle light / dark">Theme: Auto</button>
 </header>
 
 <main>
@@ -660,7 +659,7 @@ details.menu .menu-list .warn { color: var(--danger); }
   </footer>
 </aside>
 
-<footer style="padding:0 28px 28px;color:var(--muted);font-size:12px">Dashboard version: 11 Oct 2026 (layout update) · If something looks out of date, hard-refresh the page (Cmd + Shift + R; Safari: Cmd + Option + R).</footer>
+<footer style="padding:0 28px 28px;color:var(--muted);font-size:12px">Dashboard version: 11 Oct 2026 (new colour palette) · If something looks out of date, hard-refresh the page (Cmd + Shift + R; Safari: Cmd + Option + R).</footer>
 <div class="toast" id="toast" hidden></div>
 
 <!-- Google Apps Script backend for team sharing (copied by the "Copy script" button). -->
@@ -3539,11 +3538,10 @@ function setTab(name) {
   if (name === 'data') renderTable();
   if (name === 'research') renderResearch();
 }
-function applyTheme(mode) {
-  if (mode === 'auto') document.documentElement.removeAttribute('data-theme');
-  else document.documentElement.setAttribute('data-theme', mode);
-  $('#theme-btn').textContent = 'Theme: ' + mode[0].toUpperCase() + mode.slice(1);
-  try { localStorage.setItem(THEME_KEY, mode); } catch (e) {}
+function applyTheme() {
+  // Light mode only: clear any theme saved by older versions of the dashboard
+  document.documentElement.removeAttribute('data-theme');
+  try { localStorage.removeItem(THEME_KEY); } catch (e) {}
 }
 
 /* ------------------------------------------------------------------ *
@@ -4914,17 +4912,10 @@ function renderAll(animate) {
 
 function init() {
   load();
-  let theme = 'auto';
-  try { theme = localStorage.getItem(THEME_KEY) || 'auto'; } catch (e) {}
-  applyTheme(theme);
+  applyTheme();
   initMap();
 
   document.querySelectorAll('nav.tabs button').forEach(b => b.addEventListener('click', () => setTab(b.dataset.tab)));
-  $('#theme-btn').addEventListener('click', () => {
-    const cur = document.documentElement.getAttribute('data-theme') || 'auto';
-    applyTheme(cur === 'auto' ? 'light' : cur === 'light' ? 'dark' : 'auto');
-    renderAll(false);
-  });
   $('#f-search').addEventListener('input', e => { state.q = e.target.value.trim().toLowerCase(); layoutAndRender(false); });
   $('#f-stage').addEventListener('change', e => { state.stage = e.target.value; hideTip(true); layoutAndRender(true); });
   $('#f-size').addEventListener('change', e => { state.sizeBy = e.target.value; hideTip(true); layoutAndRender(true); });
@@ -4992,7 +4983,6 @@ function init() {
     if (k) setView(k);
   });
   let rt; window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { hideTip(true); layoutAndRender(false); }, 120); });
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => renderAll(false));
 
   renderAll(false);
   layoutAndRender(false);
