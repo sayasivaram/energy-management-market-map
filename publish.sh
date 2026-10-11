@@ -6,6 +6,6 @@ cp ../Energy_Management_Market_Map.html index.html
 cp ../apps-script/Code.gs apps-script/Code.gs
 cp ../energy_management_companies.csv energy_management_companies.csv
 git add -A
-git commit -m "Update market map" || { echo "Nothing to publish."; exit 0; }
+git commit -m "Update market map" -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>" || { echo "Nothing to publish."; exit 0; }
 git push
 echo "Published — live in about a minute at https://sayasivaram.github.io/energy-management-market-map/"

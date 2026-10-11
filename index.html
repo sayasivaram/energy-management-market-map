@@ -4568,9 +4568,17 @@ async function teamUploadAll(skipConfirm) {
 async function teamConnect() {
   const url = $('#tm-url').value.trim();
   if (!/^https:\/\/script\.google(usercontent)?\.com\/.+/.test(url) && !/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?\//.test(url)) {
-    toast('Paste the Web app URL from Apps Script — it starts with https://script.google.com/macros/s/ and ends in /exec.');
+    showConnectHelp(/docs\.google\.com/.test(url)
+      ? 'This is the Google Sheet link. The dashboard needs the Apps Script web-app link instead (in the Sheet: Extensions → Apps Script → Deploy → Manage deployments → copy the Web app URL ending in /exec).'
+      : 'Paste the Web app URL from Apps Script — it starts with https://script.google.com/macros/s/ and ends in /exec.', url, false);
     return;
   }
+  const shapeProblem =
+    /\/home\/|\/edit(\?|#|$)|\/d\/[^/]+\/edit/.test(url) ? 'This is the Apps Script editor link, not the web-app link. In Apps Script use Deploy → Manage deployments and copy the “Web app” URL (it ends in /exec).' :
+    /\/dev(\?|$)/.test(url) ? 'This is the test (/dev) link, which only works for you while signed in. Use Deploy → Manage deployments and copy the “Web app” URL ending in /exec.' :
+    /docs\.google\.com/.test(url) ? 'This is the Google Sheet link. The dashboard needs the Apps Script web-app link instead (Extensions → Apps Script → Deploy → Manage deployments → Web app URL, ending in /exec).' :
+    (!/\/exec(\?|$)/.test(url) && /script\.google/.test(url)) ? 'The web-app link should end in /exec. Copy it from Deploy → Manage deployments → Web app.' : '';
+  if (shapeProblem) { showConnectHelp(shapeProblem, url, false); return; }
   team.key = $('#tm-key').value.trim(); team.who = $('#tm-who').value.trim();
   lsSet(TEAM_PASS_KEY, team.key); lsSet(TEAM_WHO_KEY, team.who);
   team.status = 'connecting'; team.err = ''; renderTeamStatus();
@@ -4578,7 +4586,7 @@ async function teamConnect() {
   team.url = url;
   let j;
   try { j = await teamGet(); }
-  catch (e) { team.url = prevUrl; team.status = prevUrl ? team.status : 'off'; team.err = e.message; renderTeamStatus(); $('#tm-status-line').textContent = 'Could not connect: ' + e.message; return; }
+  catch (e) { team.url = prevUrl; team.status = prevUrl ? team.status : 'off'; team.err = e.message; renderTeamStatus(); showConnectHelp(e.message, url, true); return; }
   lsSet(TEAM_URL_KEY, url);
   team.applying = true; state.settings.teamSheetUrl = url; persist(); team.applying = false;
   team.pending = []; team.asked = false;
@@ -4601,6 +4609,27 @@ async function teamConnect() {
     } else toast('Connected — showing the team sheet.');
   }
   startTeamTimer();
+}
+/* Plain-language troubleshooting shown under the Connect button */
+function showConnectHelp(msg, url, triedFetch) {
+  const line = $('#tm-status-line');
+  line.textContent = '';
+  line.append(el('b', { text: 'Could not connect. ' }), document.createTextNode(triedFetch ? '(' + msg + ')' : msg));
+  if (!triedFetch) return;
+  const blocked = /failed to fetch|load failed|networkerror/i.test(msg);
+  const tips = blocked ? [
+    'Google refused to share the data with this page. This is almost always the deployment’s access setting. In Apps Script: Deploy → Manage deployments → ✏️ Edit → set “Execute as: Me” and “Who has access: Anyone” (not “Anyone with Google account” and not “Anyone within Yale”) → Version: New version → Deploy.',
+    'If “Anyone” is not offered, your organisation’s Google account blocks public web apps. Make the Sheet and script with a personal Gmail account instead and share the Sheet with your Yale account.',
+    'If you just changed the code or settings, you must deploy a New version; saving alone doesn’t update the live web app.',
+    'Test it: open the link below. Working = a page of text starting with {"ok":true. A Google sign-in page = access isn’t “Anyone”. “Script function not found: doGet” = the code wasn’t saved before deploying.'
+  ] : [
+    'The link responded but not with map data. Open it below; you should see text starting with {"ok":true. If you see an error from the script, re-paste the code, Save, and Deploy → Manage deployments → Edit → New version.'
+  ];
+  const ul = el('ul', { style: 'margin:6px 0 0;padding-left:18px' });
+  tips.forEach(t => ul.append(el('li', { text: t })));
+  const safe = safeUrl(url);
+  line.append(ul);
+  if (safe) line.append(el('a', { href: safe, target: '_blank', rel: 'noopener noreferrer', text: 'Open the web-app link in a new tab ↗' }));
 }
 function teamDisconnect() {
   if (!team.url) return;
