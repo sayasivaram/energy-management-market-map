@@ -21,13 +21,38 @@ var COMPANY_FIELDS = ['id', 'name', 'url', 'description', 'businessModel', 'segm
 var RESEARCH_FIELDS = ['id', 'name', 'url', 'note', 'foundVia', 'quadrant', 'priority', 'status', 'addedAt', 'updatedAt', 'mapId', 'addedBy'];
 
 function doGet() {
-  return json_({
-    ok: true,
-    companies: readRows_(COMPANY_TAB, COMPANY_FIELDS),
-    research: readRows_(RESEARCH_TAB, RESEARCH_FIELDS),
-    settings: readSettings_(),
-    serverTime: new Date().toISOString()
-  });
+  try {
+    return json_({
+      ok: true,
+      companies: readRows_(COMPANY_TAB, COMPANY_FIELDS),
+      research: readRows_(RESEARCH_TAB, RESEARCH_FIELDS),
+      settings: readSettings_(),
+      sheetUrl: ss_().getUrl(),
+      serverTime: new Date().toISOString()
+    });
+  } catch (err) {
+    // Report problems as readable JSON (an uncaught error returns a page the dashboard cannot read).
+    return json_({ ok: false, error: 'Script error: ' + String((err && err.message) || err) });
+  }
+}
+
+/* The spreadsheet this script stores data in. Works whether the script was created from inside a Sheet
+   (Extensions → Apps Script) or on its own at script.google.com — in that case it creates a Sheet once. */
+function ss_() {
+  var active = SpreadsheetApp.getActiveSpreadsheet();
+  if (active) return active;
+  var props = PropertiesService.getScriptProperties();
+  var id = props.getProperty('SHEET_ID');
+  if (id) return SpreadsheetApp.openById(id);
+  var created = SpreadsheetApp.create('EMS Market Map — Team data');
+  props.setProperty('SHEET_ID', created.getId());
+  return created;
+}
+
+/* Optional: run this once from the editor (select "authorize" → Run) to approve permissions and
+   see the sheet's address in the log. */
+function authorize() {
+  Logger.log('Team data sheet: ' + ss_().getUrl());
 }
 
 function doPost(e) {
@@ -67,7 +92,7 @@ function stamp_(items, field, who, overwrite) {
 }
 
 function tab_(name, fields) {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var ss = ss_();
   var sh = ss.getSheetByName(name) || ss.insertSheet(name);
   if (sh.getLastRow() === 0) {
     sh.getRange(1, 1, 1, fields.length).setValues([fields]).setFontWeight('bold');
@@ -155,14 +180,14 @@ function replaceRows_(name, fields, items) {
 }
 
 function readSettings_() {
-  var sh = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SETTINGS_TAB);
+  var sh = ss_().getSheetByName(SETTINGS_TAB);
   if (!sh) return null;
   var v = String(sh.getRange('A2').getValue() || '');
   try { return v ? JSON.parse(v) : null; } catch (e) { return null; }
 }
 
 function writeSettings_(settings) {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var ss = ss_();
   var sh = ss.getSheetByName(SETTINGS_TAB) || ss.insertSheet(SETTINGS_TAB);
   sh.getRange('A1').setValue('Map labels (JSON, managed by the dashboard — do not edit by hand)').setFontWeight('bold');
   sh.getRange('A2').setNumberFormat('@').setValue(JSON.stringify(settings));
