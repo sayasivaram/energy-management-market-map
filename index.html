@@ -296,7 +296,9 @@ details.menu .menu-list .warn { color: var(--danger); }
 .settings-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; align-items: start; }
 @media (max-width: 1000px) { .settings-grid { grid-template-columns: 1fr; } }
 /* Thesis targets */
-#map .node .tstar { fill: #fcd3de; stroke: var(--ink); stroke-width: 1.4; stroke-linejoin: round; pointer-events: none; display: none; }
+#map .node .tstar { fill: #fcd3de; stroke: var(--ink); stroke-width: 1.6; stroke-linejoin: round; pointer-events: none; display: none; }
+#map .node.target .bubble { display: none; }
+#map .node.target:hover .tstar, #map .node.target:focus-visible .tstar, #map .node.target.active .tstar { stroke: var(--blue); stroke-width: 2.6; }
 #map .node.target .tstar { display: inline; }
 #map .node.target .label { fill: var(--ink); font-weight: 700; }
 .tip .tip-thesis { margin-top: 10px; padding: 9px 11px; border-radius: 9px; background: #fff2f6; border: 1px solid #fcd3de; }
@@ -4262,7 +4264,7 @@ const py = (y, dom) => geo.y1 - (y - dom.y[0]) / (dom.y[1] - dom.y[0]) * (geo.y1
 const THESIS_UPDATE = JSON.parse(document.getElementById('thesis-update').textContent);
 const thesisData = () => (state.settings && state.settings.thesis) || THESIS_UPDATE.thesis;
 const isTarget = c => { const t = thesisData(); return !!(t && t.targets && c && t.targets[c.name]); };
-const displayName = c => (isTarget(c) ? '★ ' : '') + c.name;
+const displayName = c => c.name;
 function starPath(cx, cy, R, r) {
   let d = '';
   for (let i = 0; i < 10; i++) { const a = -Math.PI / 2 + i * Math.PI / 5, rr = i % 2 ? r : R; d += (i ? 'L' : 'M') + (cx + rr * Math.cos(a)).toFixed(1) + ' ' + (cy + rr * Math.sin(a)).toFixed(1); }
@@ -4382,7 +4384,7 @@ function computeLayout(view) {
   state.companies.forEach((c, i) => {
     const vis = passesFilters(c) && (view === 'overview' || quadOf(c) === view);
     const r0 = rs.f(c[state.sizeBy]);
-    const r = r0 == null ? rs.nodata : r0;
+    const r = isTarget(c) ? Math.max(r0 || 0, view === 'overview' ? 10.5 : 14) : (r0 == null ? rs.nodata : r0);   // stars stay legible
     const ax = px(c.x, dom), ay = py(c.y, dom);
     const node = { id: c.id, x: ax, y: ay, ax, ay, r, vis, nodata: r0 == null, i };
     out.set(c.id, node);
@@ -4402,7 +4404,7 @@ function computeLayout(view) {
       by0 = py(qd.y[1], dom) + 4; by1 = py(qd.y[0], dom) - 4;
       if (q.endsWith('sw')) by0 += TITLE_BAND; else by1 -= TITLE_BAND;
     } else {
-      bx0 = geo.x0 + 6; bx1 = geo.x1 - 6; by0 = geo.y0 + 6; by1 = geo.y1 - 6;
+      bx0 = geo.x0 + 6; bx1 = geo.x1 - 6; by0 = geo.y0 + 34; by1 = geo.y1 - 6;   // clear of the “Back to full map” button
     }
     Object.assign(node, { bx0, bx1, by0, by1 });
     // deterministic tiny jitter so identical anchors separate
@@ -4552,7 +4554,7 @@ function paintNode(c, n, s) {
   n.g.setAttribute('transform', `translate(${s.x.toFixed(1)},${s.y.toFixed(1)})`);
   n.bubble.setAttribute('r', Math.max(0.1, s.r).toFixed(1));
   n.hit.setAttribute('r', Math.max(12, s.r + 6).toFixed(1));
-  if (n.g.classList.contains('target')) { const k = Math.max(6.5, Math.min(10, s.r * 0.55)); n.tstar.setAttribute('d', starPath(s.r * 0.72, -s.r * 0.72, k, k * 0.45)); }
+  if (n.g.classList.contains('target')) n.tstar.setAttribute('d', starPath(0, 0, s.r, s.r * 0.46));
   n.label.setAttribute('y', (s.r + (state.view === 'overview' ? 12 : 14)).toFixed(1));
   for (const ts of n.label.childNodes) ts.setAttribute('y', n.label.getAttribute('y'));
   n.g.style.opacity = s.op.toFixed(3);
