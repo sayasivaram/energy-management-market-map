@@ -295,6 +295,21 @@ details.menu .menu-list .warn { color: var(--danger); }
 .prose > p:first-of-type { font-size: 15px; }
 .settings-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; align-items: start; }
 @media (max-width: 1000px) { .settings-grid { grid-template-columns: 1fr; } }
+/* Thesis targets */
+#map .node .tstar { fill: #fcd3de; stroke: var(--ink); stroke-width: 1.4; stroke-linejoin: round; pointer-events: none; display: none; }
+#map .node.target .tstar { display: inline; }
+#map .node.target .label { fill: var(--ink); font-weight: 700; }
+.tip .tip-thesis { margin-top: 10px; padding: 9px 11px; border-radius: 9px; background: #fff2f6; border: 1px solid #fcd3de; }
+.tip .tip-thesis .tt { font-weight: 700; color: var(--ink); font-size: 12.5px; }
+.tip .tip-thesis p { font-size: 12.5px; margin-top: 4px; }
+.thesis-banner { background: #fff2f6; border: 1px solid #fcd3de; color: var(--ink); }
+.chip.thesis input { accent-color: #9883e5; }
+.legend .tstar-key { display: inline-block; width: 14px; height: 14px; }
+#thesis-card table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 8px 0 4px; }
+#thesis-card th { position: static; background: var(--surface-2); color: var(--ink); text-transform: none; letter-spacing: 0; font-size: 12px; cursor: default; }
+#thesis-card td, #thesis-card th { padding: 7px 9px; border-bottom: 1px solid var(--grid); vertical-align: top; text-align: left; }
+#thesis-card .ex { display: inline-block; padding: 1px 8px; border-radius: 999px; background: #ece8fb; color: #5b48b8; font-size: 12px; font-weight: 600; white-space: nowrap; }
+#thesis-card button.linkish { border: 0; background: none; padding: 0; color: var(--accent); font-weight: 650; cursor: pointer; text-align: left; }
 .toast { position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%); background: var(--brand-hover); color: var(--on-brand); padding: 9px 16px; border-radius: 10px; font-size: 13px; z-index: 60; box-shadow: var(--shadow); }
 .toast[hidden] { display: none; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
@@ -331,6 +346,7 @@ details.menu .menu-list .warn { color: var(--danger); }
       </div>
     </div>
 
+    <div class="banner thesis-banner" id="thesis-banner" hidden></div>
     <div class="filter-panel" id="filter-panel" hidden role="group" aria-label="Map filters">
       <div class="filter-grid">
         <div class="fgroup">
@@ -344,6 +360,10 @@ details.menu .menu-list .warn { color: var(--danger); }
         <div class="fgroup">
           <h4>Ownership &amp; stage</h4>
           <select id="f-stage" aria-label="Ownership and stage" style="width:100%"><option value="all">All companies</option></select>
+        </div>
+        <div class="fgroup">
+          <h4>Climate thesis</h4>
+          <label class="chip thesis" id="f-thesis-chip"><input type="checkbox" id="f-thesis"> ★ Thesis-aligned targets only</label>
         </div>
         <div class="fgroup">
           <h4>Display</h4>
@@ -481,6 +501,7 @@ details.menu .menu-list .warn { color: var(--danger); }
         <p class="tab-sub">The key takeaways from the landscape research for an impact investor: where the market is heading, where the white space is, what to watch, and how the data was gathered.</p>
       </div>
     </div>
+    <div class="card prose" id="thesis-card" style="margin-bottom:18px"></div>
     <div class="card prose" id="notes-card">
         <!--NOTES-START-->
         <h2>Initial landscape scan — October 2026</h2>
@@ -494,7 +515,7 @@ details.menu .menu-list .warn { color: var(--danger); }
 
         <h3>2. A consolidation wave is under way, so strategic exits are real</h3>
         <ul>
-          <li>Recent deals: NRG–CPower (Jan 2026), Octopus majority stake in Uplight (Sep 2026), EnergyHub–Resideo Grid Services (Dec 2025), Trane–BrainBox AI (Jan 2025), Everyday Electric–Smartcar (Oct 2026), Arcadia–ENGIE Impact (announced May 2026), OPTERRA–NORESCO (Aug 2026), ABB–Lumin (Jan 2025).</li>
+          <li>Recent deals: NRG–CPower (Jan 2026), Octopus majority stake in Uplight (Sep 2026), EnergyHub–Resideo Grid Services (Dec 2025), Trane–BrainBox AI (Jan 2025), Everyday Electric–Smartcar (Oct 2026), Arcadia–ENGIE Impact (closed Apr 2026), OPTERRA–NORESCO (Aug 2026), ABB–Lumin (Jan 2025).</li>
           <li>The acquirers are utilities and retailers, HVAC OEMs and infrastructure investors. Independent scaled software platforms are becoming scarce, which supports valuations for the strongest remaining independents (Voltus, Leap, Camus, Texture).</li>
         </ul>
 
@@ -515,7 +536,7 @@ details.menu .menu-list .warn { color: var(--danger); }
 
         <h3>4. The “-as-a-service” models need lots of capital, which suits blended finance</h3>
         <ul>
-          <li>Base Power (~$2.3B raised), Budderfly ($550M+ equity plus debt), Redaptive (ABS and credit facilities), Sunrun and Haven all fund customer assets on their own balance sheets.</li>
+          <li>Base Power (over $2.5B raised), Budderfly ($550M+ equity plus debt), Redaptive (ABS and credit facilities), Sunrun and Haven all fund customer assets on their own balance sheets.</li>
           <li>There is room for catalytic or junior debt, warehouse facilities and first-loss tranches, not just equity, especially where the customers are low-income households or small businesses.</li>
           <li>Federal changes since 2025 have pushed residential solar and storage toward third-party ownership (lease, PPA and battery-as-a-service). That favours these models but raises cost-of-capital sensitivity.</li>
         </ul>
@@ -531,7 +552,7 @@ details.menu .menu-list .warn { color: var(--danger); }
 
         <h3>6. Watch-list and risks</h3>
         <ul>
-          <li>Hardware cyclicality and margin pressure: Enphase layoffs, and Stem's difficult pivot to software.</li>
+          <li>Hardware cyclicality and margin pressure: Enphase layoffs, and Stem’s hardware-to-software pivot, which needed a 2025 debt restructuring.</li>
           <li>Ownership changes that may shift strategy: sonnen (sold by Shell to Tiven, Aug 2026), Uplight (now led by Octopus), Kraken (spin-out from Octopus).</li>
           <li>Interoperability “picks and shovels” such as Enode, Leap and Smartcar (now inside Everyday Electric) could become chokepoints as VPPs scale.</li>
         </ul>
@@ -588,6 +609,7 @@ details.menu .menu-list .warn { color: var(--danger); }
             <li><b>Size.</b> Bubble area reflects the chosen metric (employees by default). Log scale keeps start-ups visible next to multinationals; switch to “proportional area” to see true relative scale. Hollow bubbles = no data for that metric.</li>
             <li><b>Colour.</b> Colour encodes the firm's role in the landscape (incumbent, key player, up-and-comer); stage of financing is in the popup and filter.</li>
             <li><b>Conglomerates.</b> Headcount and revenue for large incumbents are whole-company figures unless the popup says otherwise, so they overstate the energy-management business specifically.</li>
+            <li><b>Thesis targets.</b> Pink ★ markers flag the 10 companies that best fit the Climate thesis’s three examples (interconnection &amp; siting, DER/VPP coordination, battery dispatch). Use Filters &amp; display → “Thesis-aligned targets only”, and see the Thesis lens at the top of Investor Notes.</li>
             <li><b>Research pipeline.</b> Log promising names in the <b>To Research</b> tab; “Add to map →” opens the company form pre-filled and marks the item done when you save.</li>
             <li><b>Updating.</b> Use <b>+ Add company</b> (Market Map or Company Data tab), click a bubble → <b>Edit</b>, or bulk-import a CSV from Company Data → Import / export.</li>
           </ul>
@@ -670,7 +692,7 @@ details.menu .menu-list .warn { color: var(--danger); }
   </footer>
 </aside>
 
-<footer style="padding:0 28px 28px;color:var(--muted);font-size:12px">Dashboard version: 11 Oct 2026 (pink header) · If something looks out of date, hard-refresh the page (Cmd + Shift + R; Safari: Cmd + Option + R).</footer>
+<footer style="padding:0 28px 28px;color:var(--muted);font-size:12px">Dashboard version: 25 Oct 2026 (climate-thesis update) · If something looks out of date, hard-refresh the page (Cmd + Shift + R; Safari: Cmd + Option + R).</footer>
 <div class="toast" id="toast" hidden></div>
 
 <!-- Google Apps Script backend for team sharing (copied by the "Copy script" button). -->
@@ -875,12 +897,468 @@ function json_(obj) {
 }
 </script>
 
+<!-- Climate-thesis update (Oct 25, 2026): thesis text, the 10 thesis-aligned targets, 8 new companies and verified corrections. -->
+<script id="thesis-update" type="application/json">
+{
+ "version": "2026-10-25",
+ "summary": "Adds 8 thesis-aligned target companies, marks the 10 thesis targets and corrects 6 company facts verified on Oct 25, 2026.",
+ "companies": [
+  {
+   "name": "Distill Energy",
+   "url": "https://distill.energy",
+   "description": "Browser and API platform for probabilistic power-flow and price simulation that shows developers, traders and financiers where the grid is congested and where new projects can connect.",
+   "businessModel": "Browser and API grid-simulation platform (probabilistic power flow and price simulation) sold to traders, developers and financiers to assess congestion, curtailment and price risk.",
+   "segment": "Grid siting & congestion simulation",
+   "x": 9.0,
+   "y": 9.1,
+   "tier": "Up-and-comer",
+   "stage": "Early",
+   "hq": "Delaware entity (distributed team; CEO in British Columbia)",
+   "founded": null,
+   "employees": null,
+   "fundingM": 2.5,
+   "revenueM": null,
+   "impactNote": "Helps renewable and storage developers site projects where the grid can absorb them, cutting curtailment.",
+   "dataNote": "$2.5M pre-seed (Jul 2026). Confirm US domicile: Delaware entity, but the CEO is based in British Columbia.",
+   "sources": [
+    "https://paleblue.vc/portfolio/distill-energy",
+    "https://www.cbinsights.com/company/distill-energy"
+   ]
+  },
+  {
+   "name": "Piq Energy",
+   "url": "https://piqenergy.com",
+   "description": "AI platform that runs interconnection, ISO cost-allocation and FERC/NERC compliance studies in parallel on top of existing power-system tools, for utilities, generators and large loads.",
+   "businessModel": "Platform on top of existing power-system tools that runs interconnection, cost-allocation and compliance studies in parallel; enterprise SaaS for utilities, generators and large loads.",
+   "segment": "Interconnection studies",
+   "x": 9.4,
+   "y": 9.5,
+   "tier": "Up-and-comer",
+   "stage": "Early",
+   "hq": "San Francisco, CA",
+   "founded": null,
+   "employees": null,
+   "fundingM": 5,
+   "revenueM": null,
+   "impactNote": "Shortens multi-year interconnection studies so clean generation and storage can connect faster.",
+   "dataNote": "$5M seed (Jul 2026), valuation not disclosed — likely above Meng’s $10M post-money cap.",
+   "sources": [
+    "https://pulse2.com/piq-energy-raises-5-million-seed-to-help-unlock-north-americas-grid-bottleneck/",
+    "https://kurrant.com/kurrantly-news/piq-energy-raises-5-million-seed-to-accelerate-grid-interconnection-studies/"
+   ]
+  },
+  {
+   "name": "Magnefy",
+   "url": "https://www.magnefy.com",
+   "description": "Low-cost, non-invasive edge-AI magnetic sensors that warn C&I sites, power producers and utilities months before transformer and switchgear failures.",
+   "businessModel": "Sells low-cost non-invasive sensors plus an edge-AI analytics subscription to C&I facilities, power producers and utilities, warning months before electrical equipment failures.",
+   "segment": "Grid-edge asset monitoring",
+   "x": 8.9,
+   "y": 4.3,
+   "tier": "Up-and-comer",
+   "stage": "Early",
+   "hq": "Palo Alto, CA",
+   "founded": null,
+   "employees": null,
+   "fundingM": 1.9,
+   "revenueM": null,
+   "impactNote": "Prevents outages and extends the life of ageing grid equipment, improving resilience while holding down costs.",
+   "dataNote": "$1.5M pre-seed (Aug 2025) of ~$1.9M total; DOE EPIC Pitch 1st place ($50K, May 2025).",
+   "sources": [
+    "https://www.prnewswire.com/news-releases/greentown-labs-and-m-lab-announce-startup-cohort-for-greentown-go-x-m-lab-2025-302584439.html",
+    "https://liccardo.house.gov/media/press-releases/rep-sam-liccardo-congratulates-palo-alto-based-magnefy-winning-top-prize-us"
+   ]
+  },
+  {
+   "name": "MicroVPP",
+   "url": "https://microvpp.com",
+   "description": "No-new-hardware software that controls existing home batteries (Tesla Powerwall, Enphase, SolarEdge, Sol-Ark and others) to cut bills and earn VPP and market revenue in California and Texas.",
+   "businessModel": "No-new-hardware AI software that controls existing home batteries to cut bills and earn VPP and market revenue in California and Texas, likely via revenue share.",
+   "segment": "Home-battery VPP software",
+   "x": 2.8,
+   "y": 8.4,
+   "tier": "Up-and-comer",
+   "stage": "Early",
+   "hq": "California (likely)",
+   "founded": null,
+   "employees": null,
+   "fundingM": 0.3,
+   "revenueM": null,
+   "impactNote": "Turns existing home batteries into grid resources without new hardware (grid-level impact).",
+   "dataNote": "$300K seed (Aug 2026) from a single source; HQ likely California (one database lists Youngstown, OH).",
+   "sources": [
+    "https://fundediq.co/microgrid-microvpp-com-funding/",
+    "https://microvpp.com"
+   ]
+  },
+  {
+   "name": "COI Energy",
+   "url": "https://www.coienergy.com",
+   "description": "Platform that finds idle or wasted capacity in commercial buildings and data centres and helps them earn from demand-response and efficiency markets.",
+   "businessModel": "SaaS platform that finds idle or wasted capacity in commercial buildings and data centres and helps them monetise it in demand-response and efficiency markets; subscriptions plus share of value created.",
+   "segment": "C&I demand response",
+   "x": 7.1,
+   "y": 7.0,
+   "tier": "Up-and-comer",
+   "stage": "Early",
+   "hq": "Brooklyn, NY",
+   "founded": null,
+   "employees": null,
+   "fundingM": 0.589,
+   "revenueM": null,
+   "impactNote": "Black woman-founded; its 'kW for Good' program lets businesses gift part of their energy savings to public housing and families in energy poverty.",
+   "dataNote": "Reg CF on Republic closed Apr 2021 ($589K); Google Black Founders Fund ($100K); also lists a Tampa, FL office.",
+   "sources": [
+    "https://republic.com/coi-energy",
+    "https://www.coienergy.com"
+   ]
+  },
+  {
+   "name": "RioNadi Energy",
+   "url": "https://web.rionadi.com",
+   "description": "Open-standard (OCPP) software that lets utilities and co-ops monitor, manage and bill EV chargers and other DERs on their grid (Burlington Electric, Fall River Electric Cooperative).",
+   "businessModel": "Universal open-standard software for monitoring, operating and taking payments at EV chargers, sold to utilities and site hosts, plus storage to ease grid congestion.",
+   "segment": "Utility DER & EV-charging integration",
+   "x": 8.4,
+   "y": 8.2,
+   "tier": "Up-and-comer",
+   "stage": "Early",
+   "hq": "Houston, TX",
+   "founded": null,
+   "employees": null,
+   "fundingM": null,
+   "revenueM": null,
+   "impactNote": "Helps public-power utilities fit EV charging and distributed renewables into the grid reliably.",
+   "dataNote": "Grant-funded ($25K DeltaClimeVT 2025; claims $700K+ in grants); has a Colombian affiliate — confirm US entity.",
+   "sources": [
+    "https://www.vsjf.org/2025/06/25/rionadi-wins-deltaclimevt-energy-2025/",
+    "https://calevip.org/evsp/rionadi-energy"
+   ]
+  },
+  {
+   "name": "EQORE",
+   "url": "https://www.eqore.com",
+   "description": "Turnkey behind-the-meter batteries with autonomous load-shifting software that cut demand charges for factories and commercial sites in New England and California.",
+   "businessModel": "Turnkey battery storage for factories and C&I sites, designed, installed and operated by EQORE with software that cuts demand charges and captures utility programs; offered as no-upfront shared savings or purchase plus O&M subscription.",
+   "segment": "Behind-the-meter storage & dispatch",
+   "x": 7.7,
+   "y": 2.3,
+   "tier": "Up-and-comer",
+   "stage": "Early",
+   "hq": "Somerville, MA",
+   "founded": null,
+   "employees": null,
+   "fundingM": 1.7,
+   "revenueM": null,
+   "impactNote": "Lowers manufacturers' electricity bills while giving the New England grid peak relief.",
+   "dataNote": "$1.7M seed (Nov 2025) from MassCEC, Henry Ford III, Jonathan Kraft and members of Pointe Angels.",
+   "sources": [
+    "https://electrek.co/2025/11/20/eqore-bags-1-7m-to-bring-smart-storage-to-power-hungry-factories/",
+    "https://www.businesswire.com/news/home/20251120243453/en/EQORE-Raises-%241.7-Million-to-Tackle-Soaring-Electricity-Costs-with-Distributed-Battery-Energy-Storage",
+    "https://www.eqore.com/"
+   ]
+  },
+  {
+   "name": "Bayou Energy",
+   "url": "https://www.bayou.energy",
+   "description": "Developer API that returns customers’ utility bills and interval usage ($24 per meter per year), used by community-solar, efficiency, electrification and VPP companies.",
+   "businessModel": "Developer API returning customers' utility bills and interval usage, priced per meter per year, used by community-solar, efficiency and electrification providers.",
+   "segment": "Utility data API",
+   "x": 4.4,
+   "y": 9.5,
+   "tier": "Up-and-comer",
+   "stage": "Early",
+   "hq": "Seattle, WA",
+   "founded": null,
+   "employees": null,
+   "fundingM": 1.2,
+   "revenueM": null,
+   "impactNote": "Removes data friction for community solar (which serves renters and low-income households) and electrification providers.",
+   "dataNote": "$1.2M pre-seed (Apr 2024). Pricing $24 per meter per year.",
+   "sources": [
+    "https://www.geekwire.com/2024/this-energy-startup-wants-to-make-utility-data-more-accessible-and-spur-creation-of-new-companies/",
+    "https://www.bayou.energy/"
+   ]
+  }
+ ],
+ "fixes": {
+  "Base Power": {
+   "fundingM": 2500,
+   "dataNote": "Company says it has raised over $2.5B, including a $1B Series D (Aug 2026, $13B post-money) and a $1B Series C (Oct 2025)."
+  },
+  "Arcadia": {
+   "description": "Energy-data platform whose APIs standardise utility bill and interval data from 125+ US utilities, and which acquired ENGIE Impact (closed April 2026) to build an enterprise energy-management platform.",
+   "dataNote": "Acquired ENGIE Impact (announced May 1, 2026; closed Apr 29, 2026; combined ~2,000 staff). Funding total may include debt."
+  },
+  "Edo": {
+   "fundingM": 15,
+   "dataNote": "~$15M from Avista and McKinstry per PitchBook (incl. $5M McKinstry debt, 2024); DOE Connected Communities award ($6.5M); no outside equity round found."
+  },
+  "Stem": {
+   "impactNote": "Raises the output and grid value of existing solar and storage fleets; restructured its debt in 2025 and now reports positive adjusted EBITDA, though it remains heavily indebted."
+  },
+  "GridPoint": {
+   "impactNote": "Targets small and mid-size commercial buildings — over 90% of US commercial buildings are under 50,000 sq ft and few have building automation (DOE) — turning restaurant and retail chains into a virtual power plant."
+  },
+  "CPower (NRG Energy)": {
+   "dataNote": "Acquired by NRG as part of its ~13 GW LS Power portfolio deal (closed Jan 30, 2026)."
+  }
+ },
+ "thesis": {
+  "version": "2026-10-25",
+  "title": "A Vision for Intelligent Adaptation: The Meng Fund’s 2026–2027 Climate Investment Thesis",
+  "summary": "AI infrastructure and data centres are stressing the US grid: electricity demand is projected to rise 15.8% by 2029, while the interconnection queue has swelled to a ~2,600 GW backlog with median waits approaching five years. Because we cannot build our way out fast enough, the thesis looks for AI-driven solutions that make better use of the grid we already have.",
+  "examples": [
+   {
+    "n": 1,
+    "name": "Interconnection & siting",
+    "text": "AI-orchestrated system impact studies that compress interconnection and siting queues and pinpoint optimal connection sites",
+    "segments": "A"
+   },
+   {
+    "n": 2,
+    "name": "DER & VPP coordination",
+    "text": "AI that integrates disparate device APIs to optimise supply and demand across virtual power plants during peak stress",
+    "segments": "C · D"
+   },
+   {
+    "n": 3,
+    "name": "Grid-scale battery economics",
+    "text": "EMS-agnostic digital twins that benchmark live asset performance and optimise market dispatch against price volatility",
+    "segments": "B"
+   }
+  ],
+  "criteria": "Meng screening criteria: pre-seed, US-domiciled, ≤$10M post-money, capital-light, policy-independent, impact co-linear with revenue, and a lead investor in every deal.",
+  "targets": {
+   "Distill Energy": {
+    "example": 1,
+    "exampleName": "Interconnection & siting",
+    "segment": "A",
+    "why": "Direct fit with thesis example 1 (AI-driven grid studies to pinpoint connection sites); capital-light software; climate-focused co-leads.",
+    "check": "Confirm US domicile (Delaware entity, but the CEO is based in British Columbia); whether a $50–100K check fits right after the round; developer vs. utility sales motion.",
+    "stage": "Pre-seed; $2.5M co-led by Powerhouse Ventures and Pale Blue Dot, with Stepchange (Jul 2026)"
+   },
+   "Piq Energy": {
+    "example": 1,
+    "exampleName": "Interconnection & siting",
+    "segment": "A",
+    "why": "Most direct match to thesis example 1 (automated system impact studies that compress interconnection queues); impact investor as lead.",
+    "check": "A $5M seed likely puts post-money above Meng’s $10M cap — confirm before investing time; utility sales cycles.",
+    "stage": "Seed; $5M led by Active Impact Investments (Jul 2026); valuation not disclosed"
+   },
+   "Nira Energy": {
+    "example": 1,
+    "exampleName": "Interconnection & siting",
+    "segment": "A",
+    "why": "Direct fit with thesis example 1 and the ~2,600 GW queue backlog; 100+ developer customers; capital-efficient.",
+    "check": "May not be raising or need a small check; post-money unknown; founders not confirmed in our research.",
+    "stage": "Bootstrapped and profitable; $0.5M from YC (2022) and an undisclosed strategic growth investment led by Energize Capital (May 2025)"
+   },
+   "Magnefy": {
+    "example": 1,
+    "exampleName": "Interconnection & siting",
+    "segment": "A",
+    "why": "Helps get more out of existing grid equipment (thesis-adjacent to example 1); capital-light sensors plus analytics subscription.",
+    "check": "Utility sales cycles; impact is indirect (outage avoidance, asset life); competition from OEM monitoring products.",
+    "stage": "Pre-seed; $1.5M led by Dolby Family Ventures (announced Aug 2025, oversubscribed); DOE EPIC Pitch Competition 1st place ($50K, May 2025)"
+   },
+   "MicroVPP": {
+    "example": 2,
+    "exampleName": "DER & VPP coordination",
+    "segment": "C",
+    "why": "Direct fit with thesis example 2 (coordinating DERs across brands’ APIs into virtual power plants at peak); capital-light.",
+    "check": "Very early and thinly documented: confirm round, HQ and traction; competition from Lunar, Tesla and Everyday Electric VPPs.",
+    "stage": "Seed; $300K (Aug 2026; single source, investors not disclosed)"
+   },
+   "Edo": {
+    "example": 2,
+    "exampleName": "DER & VPP coordination",
+    "segment": "D",
+    "why": "Direct fit with thesis example 2 (building flexibility as a non-wires alternative); utility-backed; a first outside equity check would be meaningful.",
+    "check": "Cap table and governance with two strategic owners; LBNL now lists the Spokane DOE project as no longer active; ~45 staff and not yet profitable.",
+    "stage": "Early; ~$15M from Avista and McKinstry per PitchBook (incl. $5M McKinstry debt, 2024); DOE Connected Communities award ($6.5M); no outside equity round found"
+   },
+   "COI Energy": {
+    "example": 2,
+    "exampleName": "DER & VPP coordination",
+    "segment": "D",
+    "why": "Thesis example 2 (VPP capacity at peak stress); Black woman-founded; impact built into the product (\"kW for Good\" shares savings with public housing).",
+    "check": "Traction and revenue since 2021; demand-response market-rule exposure; competition from Voltus and CPower.",
+    "stage": "Seed; Reg CF on Republic (closed Apr 2021, $589K from 1,758 investors); Google Black Founders Fund ($100K); 43North 2026 semifinalist (Sep 2026)"
+   },
+   "RioNadi Energy": {
+    "example": 2,
+    "exampleName": "DER & VPP coordination",
+    "segment": "A",
+    "why": "Thesis example 2 (integrating DERs for utilities); serves public-power and co-op utilities; a first equity check would matter.",
+    "check": "Leadership change (founder now listed as Head of Business Development); confirm the US entity given the Colombian affiliate; small team.",
+    "stage": "Pre-seed / grant-funded; $25K DeltaClimeVT 2025 award; claims $700K+ in grants; no equity disclosed"
+   },
+   "EQORE": {
+    "example": 3,
+    "exampleName": "Grid-scale battery economics",
+    "segment": "F",
+    "why": "Thesis-adjacent to example 3 (optimising battery dispatch, behind the meter); bill savings embedded in every sale; Boston-area, within driving distance of New Haven.",
+    "check": "Shared-savings option puts batteries on the balance sheet (capex screen) — prefer purchase + subscription; partly relies on utility programs.",
+    "stage": "Seed; $1.7M (Nov 2025, oversubscribed) from MassCEC, Henry Ford III, Jonathan Kraft and members of Pointe Angels"
+   },
+   "Bayou Energy": {
+    "example": 2,
+    "exampleName": "DER & VPP coordination",
+    "segment": "B",
+    "why": "Enabler for thesis example 2 (utility data is a bottleneck for enrolling devices in VPPs); capital-light, usage-priced infrastructure.",
+    "check": "Competition from Arcadia; impact is enabling rather than direct; CTO co-founder not confirmed.",
+    "stage": "Pre-seed; $1.2M (Apr 2024) from Surface Ventures, Stepchange, CoFound Partners and others"
+   }
+  },
+  "dropped": [
+   {
+    "name": "Dartboard Energy",
+    "why": "Pivoted from grid-battery operations to voice AI for field technicians (YC page and website, Oct 2026)."
+   },
+   {
+    "name": "Aalto Energy (formerly Saldo)",
+    "why": "Only public product is a consumer EV-charging app; the DER-orchestration description could not be confirmed."
+   },
+   {
+    "name": "GridSeer",
+    "why": "Website now redirects to a Duke lab page and there is no company news since mid-2025; possibly dormant."
+   }
+  ],
+  "gap": "Thesis example 3 (grid-scale battery digital twins) has the thinnest US pre-seed bench: Tyba, Ascend Analytics and enspired are later-stage. Keep sourcing."
+ }
+}
+</script>
+
 <!-- Baked-in dataset. "Download updated dashboard" rewrites this block. -->
 <script id="seed-data" type="application/json">
 {
- "generatedAt": "2026-10-11T19:41:35.651459+00:00",
+ "generatedAt": "2026-10-26T01:17:15.225085+00:00",
  "settings": {
-  "teamSheetUrl": "https://script.google.com/macros/s/AKfycbyh_z1Pfaq3wuAGlr7B0iXDnl4rnJH3XfUTn_MYmQVd0udTzO1eKLEVKvqSxEmhA13i/exec"
+  "teamSheetUrl": "https://script.google.com/macros/s/AKfycbyh_z1Pfaq3wuAGlr7B0iXDnl4rnJH3XfUTn_MYmQVd0udTzO1eKLEVKvqSxEmhA13i/exec",
+  "thesis": {
+   "version": "2026-10-25",
+   "title": "A Vision for Intelligent Adaptation: The Meng Fund’s 2026–2027 Climate Investment Thesis",
+   "summary": "AI infrastructure and data centres are stressing the US grid: electricity demand is projected to rise 15.8% by 2029, while the interconnection queue has swelled to a ~2,600 GW backlog with median waits approaching five years. Because we cannot build our way out fast enough, the thesis looks for AI-driven solutions that make better use of the grid we already have.",
+   "examples": [
+    {
+     "n": 1,
+     "name": "Interconnection & siting",
+     "text": "AI-orchestrated system impact studies that compress interconnection and siting queues and pinpoint optimal connection sites",
+     "segments": "A"
+    },
+    {
+     "n": 2,
+     "name": "DER & VPP coordination",
+     "text": "AI that integrates disparate device APIs to optimise supply and demand across virtual power plants during peak stress",
+     "segments": "C · D"
+    },
+    {
+     "n": 3,
+     "name": "Grid-scale battery economics",
+     "text": "EMS-agnostic digital twins that benchmark live asset performance and optimise market dispatch against price volatility",
+     "segments": "B"
+    }
+   ],
+   "criteria": "Meng screening criteria: pre-seed, US-domiciled, ≤$10M post-money, capital-light, policy-independent, impact co-linear with revenue, and a lead investor in every deal.",
+   "targets": {
+    "Distill Energy": {
+     "example": 1,
+     "exampleName": "Interconnection & siting",
+     "segment": "A",
+     "why": "Direct fit with thesis example 1 (AI-driven grid studies to pinpoint connection sites); capital-light software; climate-focused co-leads.",
+     "check": "Confirm US domicile (Delaware entity, but the CEO is based in British Columbia); whether a $50–100K check fits right after the round; developer vs. utility sales motion.",
+     "stage": "Pre-seed; $2.5M co-led by Powerhouse Ventures and Pale Blue Dot, with Stepchange (Jul 2026)"
+    },
+    "Piq Energy": {
+     "example": 1,
+     "exampleName": "Interconnection & siting",
+     "segment": "A",
+     "why": "Most direct match to thesis example 1 (automated system impact studies that compress interconnection queues); impact investor as lead.",
+     "check": "A $5M seed likely puts post-money above Meng’s $10M cap — confirm before investing time; utility sales cycles.",
+     "stage": "Seed; $5M led by Active Impact Investments (Jul 2026); valuation not disclosed"
+    },
+    "Nira Energy": {
+     "example": 1,
+     "exampleName": "Interconnection & siting",
+     "segment": "A",
+     "why": "Direct fit with thesis example 1 and the ~2,600 GW queue backlog; 100+ developer customers; capital-efficient.",
+     "check": "May not be raising or need a small check; post-money unknown; founders not confirmed in our research.",
+     "stage": "Bootstrapped and profitable; $0.5M from YC (2022) and an undisclosed strategic growth investment led by Energize Capital (May 2025)"
+    },
+    "Magnefy": {
+     "example": 1,
+     "exampleName": "Interconnection & siting",
+     "segment": "A",
+     "why": "Helps get more out of existing grid equipment (thesis-adjacent to example 1); capital-light sensors plus analytics subscription.",
+     "check": "Utility sales cycles; impact is indirect (outage avoidance, asset life); competition from OEM monitoring products.",
+     "stage": "Pre-seed; $1.5M led by Dolby Family Ventures (announced Aug 2025, oversubscribed); DOE EPIC Pitch Competition 1st place ($50K, May 2025)"
+    },
+    "MicroVPP": {
+     "example": 2,
+     "exampleName": "DER & VPP coordination",
+     "segment": "C",
+     "why": "Direct fit with thesis example 2 (coordinating DERs across brands’ APIs into virtual power plants at peak); capital-light.",
+     "check": "Very early and thinly documented: confirm round, HQ and traction; competition from Lunar, Tesla and Everyday Electric VPPs.",
+     "stage": "Seed; $300K (Aug 2026; single source, investors not disclosed)"
+    },
+    "Edo": {
+     "example": 2,
+     "exampleName": "DER & VPP coordination",
+     "segment": "D",
+     "why": "Direct fit with thesis example 2 (building flexibility as a non-wires alternative); utility-backed; a first outside equity check would be meaningful.",
+     "check": "Cap table and governance with two strategic owners; LBNL now lists the Spokane DOE project as no longer active; ~45 staff and not yet profitable.",
+     "stage": "Early; ~$15M from Avista and McKinstry per PitchBook (incl. $5M McKinstry debt, 2024); DOE Connected Communities award ($6.5M); no outside equity round found"
+    },
+    "COI Energy": {
+     "example": 2,
+     "exampleName": "DER & VPP coordination",
+     "segment": "D",
+     "why": "Thesis example 2 (VPP capacity at peak stress); Black woman-founded; impact built into the product (\"kW for Good\" shares savings with public housing).",
+     "check": "Traction and revenue since 2021; demand-response market-rule exposure; competition from Voltus and CPower.",
+     "stage": "Seed; Reg CF on Republic (closed Apr 2021, $589K from 1,758 investors); Google Black Founders Fund ($100K); 43North 2026 semifinalist (Sep 2026)"
+    },
+    "RioNadi Energy": {
+     "example": 2,
+     "exampleName": "DER & VPP coordination",
+     "segment": "A",
+     "why": "Thesis example 2 (integrating DERs for utilities); serves public-power and co-op utilities; a first equity check would matter.",
+     "check": "Leadership change (founder now listed as Head of Business Development); confirm the US entity given the Colombian affiliate; small team.",
+     "stage": "Pre-seed / grant-funded; $25K DeltaClimeVT 2025 award; claims $700K+ in grants; no equity disclosed"
+    },
+    "EQORE": {
+     "example": 3,
+     "exampleName": "Grid-scale battery economics",
+     "segment": "F",
+     "why": "Thesis-adjacent to example 3 (optimising battery dispatch, behind the meter); bill savings embedded in every sale; Boston-area, within driving distance of New Haven.",
+     "check": "Shared-savings option puts batteries on the balance sheet (capex screen) — prefer purchase + subscription; partly relies on utility programs.",
+     "stage": "Seed; $1.7M (Nov 2025, oversubscribed) from MassCEC, Henry Ford III, Jonathan Kraft and members of Pointe Angels"
+    },
+    "Bayou Energy": {
+     "example": 2,
+     "exampleName": "DER & VPP coordination",
+     "segment": "B",
+     "why": "Enabler for thesis example 2 (utility data is a bottleneck for enrolling devices in VPPs); capital-light, usage-priced infrastructure.",
+     "check": "Competition from Arcadia; impact is enabling rather than direct; CTO co-founder not confirmed.",
+     "stage": "Pre-seed; $1.2M (Apr 2024) from Surface Ventures, Stepchange, CoFound Partners and others"
+    }
+   },
+   "dropped": [
+    {
+     "name": "Dartboard Energy",
+     "why": "Pivoted from grid-battery operations to voice AI for field technicians (YC page and website, Oct 2026)."
+    },
+    {
+     "name": "Aalto Energy (formerly Saldo)",
+     "why": "Only public product is a consumer EV-charging app; the DER-orchestration description could not be confirmed."
+    },
+    {
+     "name": "GridSeer",
+     "why": "Website now redirects to a Duke lab page and there is no company news since mid-2025; possibly dormant."
+    }
+   ],
+   "gap": "Thesis example 3 (grid-scale battery digital twins) has the thinnest US pre-seed bench: Tyba, Ascend Analytics and enspired are later-stage. Keep sourcing."
+  }
  },
  "companies": [
   {
@@ -1425,13 +1903,13 @@ function json_(obj) {
    "hq": "Austin, USA",
    "founded": 2023,
    "employees": 400,
-   "fundingM": 2300,
+   "fundingM": 2500,
    "revenueM": null,
    "segment": "Grid-tied home battery EaaS",
    "description": "Licensed Texas retail electricity provider that installs company-owned 25–50 kWh batteries in homes and runs them as a distributed power plant in ERCOT, now expanding beyond Texas.",
    "businessModel": "Battery-as-a-service: install fee plus monthly membership and fixed-rate power supply, with most margin from wholesale arbitrage and grid services across the fleet.",
    "impactNote": "Makes home backup power near-free for mainstream households while building one of the largest dispatchable distributed-storage fleets, with US manufacturing.",
-   "dataNote": "Funding includes a reported $1B Series D (Aug 2026, $13B valuation) from deal-tracker reporting, not a primary release.",
+   "dataNote": "Company says it has raised over $2.5B, including a $1B Series D (Aug 2026, $13B post-money) and a $1B Series C (Oct 2025).",
    "sources": [
     "https://techcrunch.com/2025/10/08/base-power-raises-1b-to-deploy-home-batteries-everywhere/",
     "https://vcnewsdaily.com/base-power/venture-capital-funding/prqttdmhbh"
@@ -1643,7 +2121,7 @@ function json_(obj) {
     "https://www.nsenergybusiness.com/news/nrg-energy-finalises-13gw-power-asset-deal-with-ls-power/"
    ],
    "id": "cpower-nrg-energy",
-   "dataNote": ""
+   "dataNote": "Acquired by NRG as part of its ~13 GW LS Power portfolio deal (closed Jan 30, 2026)."
   },
   {
    "name": "Voltus",
@@ -1706,7 +2184,7 @@ function json_(obj) {
    "segment": "DER / storage optimisation software",
    "description": "AI-driven energy software company whose PowerTrack platform (asset performance management, EMS and optimisation) manages ~36 GW of solar and storage for C&I and utility-scale owners.",
    "businessModel": "Recurring SaaS and managed-services fees (~$41M ARR at end-2025) plus declining edge-hardware and battery resale.",
-   "impactNote": "Raises the output and grid value of existing solar and storage fleets, though the company has struggled financially through its pivot.",
+   "impactNote": "Raises the output and grid value of existing solar and storage fleets; restructured its debt in 2025 and now reports positive adjusted EBITDA, though it remains heavily indebted.",
    "sources": [
     "https://www.businesswire.com/news/home/20260304509748/en/",
     "https://www.sec.gov/Archives/edgar/data/1758766/000175876626000016/stem-20251231.htm"
@@ -1727,10 +2205,10 @@ function json_(obj) {
    "fundingM": 575,
    "revenueM": null,
    "segment": "Energy data & utility-bill intelligence",
-   "description": "Energy-data platform whose APIs standardise utility bill and interval data from 125+ US utilities, and which agreed in May 2026 to acquire ENGIE Impact to build an enterprise energy-management platform.",
+   "description": "Energy-data platform whose APIs standardise utility bill and interval data from 125+ US utilities, and which acquired ENGIE Impact (closed April 2026) to build an enterprise energy-management platform.",
    "businessModel": "Usage- and subscription-based API/SaaS fees for utility data and bill management, expanding into procurement and sustainability advisory via ENGIE Impact.",
    "impactNote": "Unlocking siloed utility data underpins carbon accounting, efficiency targeting and DER enrolment across the industry.",
-   "dataNote": "ENGIE Impact deal announced May 2026 (combined ~2,000 staff); closing not confirmed. Funding may include debt.",
+   "dataNote": "Acquired ENGIE Impact (announced May 1, 2026; closed Apr 29, 2026; combined ~2,000 staff). Funding total may include debt.",
    "sources": [
     "https://www.engieimpact.com/newsroom/engieimpact-is-arcadia",
     "https://www.axios.com/2026/05/01/energy-deal-arcadia-engie-impact",
@@ -2209,7 +2687,7 @@ function json_(obj) {
    "segment": "Small-commercial building EMS",
    "description": "IoT building energy-management system (hardware plus software) for multi-site small and mid-size commercial buildings that also enables them to act as grid-interactive flexible load.",
    "businessModel": "Hardware plus recurring software/monitoring subscriptions, often bundled with financed retrofits, plus utility grid-services revenue.",
-   "impactNote": "Targets the ~90% of US commercial buildings too small for a traditional BMS, turning restaurant and retail chains into a VPP.",
+   "impactNote": "Targets small and mid-size commercial buildings — over 90% of US commercial buildings are under 50,000 sq ft and few have building automation (DOE) — turning restaurant and retail chains into a virtual power plant.",
    "sources": [
     "https://www.gridpoint.com/news/gridpoint-raises-45m-in-strategic-funding-as-it-plans-international-expansion/",
     "https://www.cbinsights.com/company/gridpoint/financials"
@@ -3140,13 +3618,13 @@ function json_(obj) {
    "hq": "Seattle, USA",
    "founded": 2021,
    "employees": 20,
-   "fundingM": null,
+   "fundingM": 15,
    "revenueM": null,
    "segment": "Commercial-building flexibility / VPP",
    "description": "Aggregates commercial buildings into virtual power plants by adding data gateways, modelling building loads and optimising HVAC controls for utilities and owners.",
    "businessModel": "Utility program and VPP contracts plus fees or revenue share with building owners on flexibility and savings.",
    "impactNote": "Uses existing buildings as non-wires alternatives; leads a DOE Connected Communities project in Spokane.",
-   "dataNote": "Created by McKinstry and Avista; funding mainly a $6.6M DOE award plus McKinstry debt.",
+   "dataNote": "~$15M from Avista and McKinstry per PitchBook (incl. $5M McKinstry debt, 2024); DOE Connected Communities award ($6.5M); no outside equity round found.",
    "sources": [
     "https://www.connectcre.com/stories/dept-of-energy-grants-6-6m-to-edo-for-spokane-smart-grid-project/",
     "https://www.geekwire.com/2026/forget-new-power-plants-seattle-startup-edo-wants-to-turn-your-office-building-into-one/"
@@ -3243,6 +3721,191 @@ function json_(obj) {
     "https://www.ccjdigital.com/alternative-power/article/15740099/betterfleet-secures-15m-in-funding-for-aipowered-software"
    ],
    "id": "betterfleet"
+  },
+  {
+   "name": "Distill Energy",
+   "url": "https://distill.energy",
+   "description": "Browser and API platform for probabilistic power-flow and price simulation that shows developers, traders and financiers where the grid is congested and where new projects can connect.",
+   "businessModel": "Browser and API grid-simulation platform (probabilistic power flow and price simulation) sold to traders, developers and financiers to assess congestion, curtailment and price risk.",
+   "segment": "Grid siting & congestion simulation",
+   "x": 9.0,
+   "y": 9.1,
+   "tier": "Up-and-comer",
+   "stage": "Early",
+   "hq": "Delaware entity (distributed team; CEO in British Columbia)",
+   "founded": null,
+   "employees": null,
+   "fundingM": 2.5,
+   "revenueM": null,
+   "impactNote": "Helps renewable and storage developers site projects where the grid can absorb them, cutting curtailment.",
+   "dataNote": "$2.5M pre-seed (Jul 2026). Confirm US domicile: Delaware entity, but the CEO is based in British Columbia.",
+   "sources": [
+    "https://paleblue.vc/portfolio/distill-energy",
+    "https://www.cbinsights.com/company/distill-energy"
+   ],
+   "id": "distill-energy"
+  },
+  {
+   "name": "Piq Energy",
+   "url": "https://piqenergy.com",
+   "description": "AI platform that runs interconnection, ISO cost-allocation and FERC/NERC compliance studies in parallel on top of existing power-system tools, for utilities, generators and large loads.",
+   "businessModel": "Platform on top of existing power-system tools that runs interconnection, cost-allocation and compliance studies in parallel; enterprise SaaS for utilities, generators and large loads.",
+   "segment": "Interconnection studies",
+   "x": 9.4,
+   "y": 9.5,
+   "tier": "Up-and-comer",
+   "stage": "Early",
+   "hq": "San Francisco, CA",
+   "founded": null,
+   "employees": null,
+   "fundingM": 5,
+   "revenueM": null,
+   "impactNote": "Shortens multi-year interconnection studies so clean generation and storage can connect faster.",
+   "dataNote": "$5M seed (Jul 2026), valuation not disclosed — likely above Meng’s $10M post-money cap.",
+   "sources": [
+    "https://pulse2.com/piq-energy-raises-5-million-seed-to-help-unlock-north-americas-grid-bottleneck/",
+    "https://kurrant.com/kurrantly-news/piq-energy-raises-5-million-seed-to-accelerate-grid-interconnection-studies/"
+   ],
+   "id": "piq-energy"
+  },
+  {
+   "name": "Magnefy",
+   "url": "https://www.magnefy.com",
+   "description": "Low-cost, non-invasive edge-AI magnetic sensors that warn C&I sites, power producers and utilities months before transformer and switchgear failures.",
+   "businessModel": "Sells low-cost non-invasive sensors plus an edge-AI analytics subscription to C&I facilities, power producers and utilities, warning months before electrical equipment failures.",
+   "segment": "Grid-edge asset monitoring",
+   "x": 8.9,
+   "y": 4.3,
+   "tier": "Up-and-comer",
+   "stage": "Early",
+   "hq": "Palo Alto, CA",
+   "founded": null,
+   "employees": null,
+   "fundingM": 1.9,
+   "revenueM": null,
+   "impactNote": "Prevents outages and extends the life of ageing grid equipment, improving resilience while holding down costs.",
+   "dataNote": "$1.5M pre-seed (Aug 2025) of ~$1.9M total; DOE EPIC Pitch 1st place ($50K, May 2025).",
+   "sources": [
+    "https://www.prnewswire.com/news-releases/greentown-labs-and-m-lab-announce-startup-cohort-for-greentown-go-x-m-lab-2025-302584439.html",
+    "https://liccardo.house.gov/media/press-releases/rep-sam-liccardo-congratulates-palo-alto-based-magnefy-winning-top-prize-us"
+   ],
+   "id": "magnefy"
+  },
+  {
+   "name": "MicroVPP",
+   "url": "https://microvpp.com",
+   "description": "No-new-hardware software that controls existing home batteries (Tesla Powerwall, Enphase, SolarEdge, Sol-Ark and others) to cut bills and earn VPP and market revenue in California and Texas.",
+   "businessModel": "No-new-hardware AI software that controls existing home batteries to cut bills and earn VPP and market revenue in California and Texas, likely via revenue share.",
+   "segment": "Home-battery VPP software",
+   "x": 2.8,
+   "y": 8.4,
+   "tier": "Up-and-comer",
+   "stage": "Early",
+   "hq": "California (likely)",
+   "founded": null,
+   "employees": null,
+   "fundingM": 0.3,
+   "revenueM": null,
+   "impactNote": "Turns existing home batteries into grid resources without new hardware (grid-level impact).",
+   "dataNote": "$300K seed (Aug 2026) from a single source; HQ likely California (one database lists Youngstown, OH).",
+   "sources": [
+    "https://fundediq.co/microgrid-microvpp-com-funding/",
+    "https://microvpp.com"
+   ],
+   "id": "microvpp"
+  },
+  {
+   "name": "COI Energy",
+   "url": "https://www.coienergy.com",
+   "description": "Platform that finds idle or wasted capacity in commercial buildings and data centres and helps them earn from demand-response and efficiency markets.",
+   "businessModel": "SaaS platform that finds idle or wasted capacity in commercial buildings and data centres and helps them monetise it in demand-response and efficiency markets; subscriptions plus share of value created.",
+   "segment": "C&I demand response",
+   "x": 7.1,
+   "y": 7.0,
+   "tier": "Up-and-comer",
+   "stage": "Early",
+   "hq": "Brooklyn, NY",
+   "founded": null,
+   "employees": null,
+   "fundingM": 0.589,
+   "revenueM": null,
+   "impactNote": "Black woman-founded; its 'kW for Good' program lets businesses gift part of their energy savings to public housing and families in energy poverty.",
+   "dataNote": "Reg CF on Republic closed Apr 2021 ($589K); Google Black Founders Fund ($100K); also lists a Tampa, FL office.",
+   "sources": [
+    "https://republic.com/coi-energy",
+    "https://www.coienergy.com"
+   ],
+   "id": "coi-energy"
+  },
+  {
+   "name": "RioNadi Energy",
+   "url": "https://web.rionadi.com",
+   "description": "Open-standard (OCPP) software that lets utilities and co-ops monitor, manage and bill EV chargers and other DERs on their grid (Burlington Electric, Fall River Electric Cooperative).",
+   "businessModel": "Universal open-standard software for monitoring, operating and taking payments at EV chargers, sold to utilities and site hosts, plus storage to ease grid congestion.",
+   "segment": "Utility DER & EV-charging integration",
+   "x": 8.4,
+   "y": 8.2,
+   "tier": "Up-and-comer",
+   "stage": "Early",
+   "hq": "Houston, TX",
+   "founded": null,
+   "employees": null,
+   "fundingM": null,
+   "revenueM": null,
+   "impactNote": "Helps public-power utilities fit EV charging and distributed renewables into the grid reliably.",
+   "dataNote": "Grant-funded ($25K DeltaClimeVT 2025; claims $700K+ in grants); has a Colombian affiliate — confirm US entity.",
+   "sources": [
+    "https://www.vsjf.org/2025/06/25/rionadi-wins-deltaclimevt-energy-2025/",
+    "https://calevip.org/evsp/rionadi-energy"
+   ],
+   "id": "rionadi-energy"
+  },
+  {
+   "name": "EQORE",
+   "url": "https://www.eqore.com",
+   "description": "Turnkey behind-the-meter batteries with autonomous load-shifting software that cut demand charges for factories and commercial sites in New England and California.",
+   "businessModel": "Turnkey battery storage for factories and C&I sites, designed, installed and operated by EQORE with software that cuts demand charges and captures utility programs; offered as no-upfront shared savings or purchase plus O&M subscription.",
+   "segment": "Behind-the-meter storage & dispatch",
+   "x": 7.7,
+   "y": 2.3,
+   "tier": "Up-and-comer",
+   "stage": "Early",
+   "hq": "Somerville, MA",
+   "founded": null,
+   "employees": null,
+   "fundingM": 1.7,
+   "revenueM": null,
+   "impactNote": "Lowers manufacturers' electricity bills while giving the New England grid peak relief.",
+   "dataNote": "$1.7M seed (Nov 2025) from MassCEC, Henry Ford III, Jonathan Kraft and members of Pointe Angels.",
+   "sources": [
+    "https://electrek.co/2025/11/20/eqore-bags-1-7m-to-bring-smart-storage-to-power-hungry-factories/",
+    "https://www.businesswire.com/news/home/20251120243453/en/EQORE-Raises-%241.7-Million-to-Tackle-Soaring-Electricity-Costs-with-Distributed-Battery-Energy-Storage",
+    "https://www.eqore.com/"
+   ],
+   "id": "eqore"
+  },
+  {
+   "name": "Bayou Energy",
+   "url": "https://www.bayou.energy",
+   "description": "Developer API that returns customers’ utility bills and interval usage ($24 per meter per year), used by community-solar, efficiency, electrification and VPP companies.",
+   "businessModel": "Developer API returning customers' utility bills and interval usage, priced per meter per year, used by community-solar, efficiency and electrification providers.",
+   "segment": "Utility data API",
+   "x": 4.4,
+   "y": 9.5,
+   "tier": "Up-and-comer",
+   "stage": "Early",
+   "hq": "Seattle, WA",
+   "founded": null,
+   "employees": null,
+   "fundingM": 1.2,
+   "revenueM": null,
+   "impactNote": "Removes data friction for community solar (which serves renters and low-income households) and electrification providers.",
+   "dataNote": "$1.2M pre-seed (Apr 2024). Pricing $24 per meter per year.",
+   "sources": [
+    "https://www.geekwire.com/2024/this-energy-startup-wants-to-make-utility-data-more-accessible-and-spur-creation-of-new-companies/",
+    "https://www.bayou.energy/"
+   ],
+   "id": "bayou-energy"
   }
  ]
 }
@@ -3315,7 +3978,8 @@ const state = {
   rqEditing: null,
   rqFilter: 'open',
   rqQ: '',
-  promotingId: null
+  promotingId: null,
+  thesisOnly: false
 };
 
 /* ------------------------------------------------------------------ *
@@ -3594,10 +4258,82 @@ function measure() {
 const px = (x, dom) => geo.x0 + (x - dom.x[0]) / (dom.x[1] - dom.x[0]) * (geo.x1 - geo.x0);
 const py = (y, dom) => geo.y1 - (y - dom.y[0]) / (dom.y[1] - dom.y[0]) * (geo.y1 - geo.y0);
 
+/* ---------------- Climate thesis ---------------- */
+const THESIS_UPDATE = JSON.parse(document.getElementById('thesis-update').textContent);
+const thesisData = () => (state.settings && state.settings.thesis) || THESIS_UPDATE.thesis;
+const isTarget = c => { const t = thesisData(); return !!(t && t.targets && c && t.targets[c.name]); };
+const displayName = c => (isTarget(c) ? '★ ' : '') + c.name;
+function starPath(cx, cy, R, r) {
+  let d = '';
+  for (let i = 0; i < 10; i++) { const a = -Math.PI / 2 + i * Math.PI / 5, rr = i % 2 ? r : R; d += (i ? 'L' : 'M') + (cx + rr * Math.cos(a)).toFixed(1) + ' ' + (cy + rr * Math.sin(a)).toFixed(1); }
+  return d + 'Z';
+}
+function thesisUpdatePending() {
+  const t = state.settings.thesis;
+  const missing = THESIS_UPDATE.companies.some(c => !state.companies.some(x => x.name.toLowerCase() === c.name.toLowerCase()));
+  return !t || t.version !== THESIS_UPDATE.version || missing;
+}
+/* Merge the thesis update without overwriting anyone else's edits: add missing companies, patch the verified fields,
+   tick matching open To Research items, and store the thesis (text + targets) in the shared settings. */
+function applyThesisUpdate(silent) {
+  const now = new Date().toISOString();
+  const byName = name => state.companies.find(x => x.name.toLowerCase() === name.toLowerCase());
+  let added = 0, fixed = 0;
+  for (const c of THESIS_UPDATE.companies) if (!byName(c.name)) { state.companies.push(normalize(Object.assign({}, c, { updatedAt: now }))); added++; }
+  for (const [name, f] of Object.entries(THESIS_UPDATE.fixes)) { const c = byName(name); if (c) { Object.assign(c, f, { updatedAt: now }); fixed++; } }
+  for (const r of state.research) {
+    const c = byName(r.name);
+    if (c && THESIS_UPDATE.thesis.targets[c.name] && (r.status === 'To research' || r.status === 'Researching')) { r.status = 'Added to map'; r.mapId = c.id; r.updatedAt = now; }
+  }
+  state.settings.thesis = JSON.parse(JSON.stringify(THESIS_UPDATE.thesis));
+  persist();
+  renderAll(false);
+  if (!silent) toast(`Thesis update applied: ${added} companies added, ${fixed} corrected, 10 targets marked.` + (team.url ? ' Saving to the team sheet…' : ''));
+}
+function renderThesisBanner() {
+  const b = $('#thesis-banner'); if (!b) return;
+  b.innerHTML = '';
+  if (!(team.url && team.status !== 'connecting' && thesisUpdatePending())) { b.hidden = true; return; }
+  b.append(el('span', { text: '★ Climate-thesis update ready: ' + THESIS_UPDATE.summary + ' Applying it saves to the team sheet (team passcode needed).' }));
+  b.append(el('span', { class: 'spacer' }));
+  b.append(el('button', { class: 'btn small primary', text: 'Apply to team sheet', onclick: () => applyThesisUpdate(false) }));
+  b.hidden = false;
+}
+function renderThesisCard() {
+  const box = $('#thesis-card'); if (!box) return;
+  const t = thesisData();
+  box.innerHTML = '';
+  box.append(el('h2', { text: 'Thesis lens — 2026–27 Climate thesis' }));
+  box.append(el('p', null, el('b', { text: 'Thesis: ' }), el('i', { text: t.title })));
+  box.append(el('p', { text: t.summary }));
+  const ul = el('ul');
+  t.examples.forEach(e => ul.append(el('li', null, el('b', { text: `${e.n}. ${e.name}: ` }), document.createTextNode(e.text + ' '), el('span', { class: 'ex', text: 'write-up segment ' + e.segments }))));
+  box.append(el('h3', { text: 'The three example solutions the thesis prioritises' }), ul);
+  box.append(el('h3', { text: '★ Ten thesis-aligned targets (verified Oct 25, 2026)' }));
+  const tbl = el('table'), head = el('tr');
+  ['Company', 'Thesis example', 'Stage & funding', 'Check before investing'].forEach(h => head.append(el('th', { text: h })));
+  tbl.append(head);
+  Object.entries(t.targets).sort((a, b) => a[1].example - b[1].example).forEach(([name, v]) => {
+    const c = state.companies.find(x => x.name === name);
+    const nameCell = el('td');
+    if (c) nameCell.append(el('button', { class: 'linkish', text: name, title: 'Show on the map', onclick: () => showOnMap(c.id, name) }));
+    else nameCell.append(el('b', { text: name }));
+    tbl.append(el('tr', null, nameCell, el('td', null, el('span', { class: 'ex', text: `${v.example} · ${v.exampleName}` })), el('td', { text: v.stage }), el('td', { text: v.check })));
+  });
+  box.append(tbl);
+  if (t.gap) box.append(el('p', { class: 'hint', text: t.gap }));
+  if (t.dropped && t.dropped.length) {
+    box.append(el('h3', { text: 'Dropped after verification' }));
+    const dl = el('ul'); t.dropped.forEach(d => dl.append(el('li', null, el('b', { text: d.name + ': ' }), document.createTextNode(d.why)))); box.append(dl);
+  }
+  box.append(el('p', { class: 'hint', text: t.criteria + ' Buildings and home electrification remain on the map but sit outside the thesis’s three examples.' }));
+}
+
 const PRIVATE_STAGES = ['Late-stage', 'Growth', 'Early'];
 const isPrivate = c => PRIVATE_STAGES.includes(c.stage);
 function passesFilters(c) {
   if (!state.tiers.has(c.tier)) return false;
+  if (state.thesisOnly && !isTarget(c)) return false;
   if (state.stage === '__private') { if (!isPrivate(c)) return false; }
   else if (state.stage !== 'all' && c.stage !== state.stage) return false;
   return true;
@@ -3652,7 +4388,8 @@ function computeLayout(view) {
     out.set(c.id, node);
     if (!vis) return;
     node.showLabel = labelShown(c, r, view, rs);
-    node.lines = node.showLabel ? splitLabel(c.name, fs) : [];
+    node.target = isTarget(c);
+    node.lines = node.showLabel ? splitLabel(displayName(c), fs) : [];
     node.lw = node.showLabel ? Math.max(...node.lines.map(l => textWidth(l, fs))) : 0;
     node.le = node.showLabel ? lh * node.lines.length + 2 : 0;   // extra height below bubble for the label
     node.hw = Math.max(node.r, node.lw / 2) + 3;
@@ -3689,7 +4426,7 @@ function computeLayout(view) {
       const order = grp.slice().sort((a, b) => a.r - b.r || a.lw - b.lw);
       for (const n of order) {
         if (used <= area * 0.5) break;
-        if (!n.showLabel) continue;
+        if (!n.showLabel || n.target) continue;   // thesis targets always keep their label
         used -= 4 * n.hw * n.hh;
         n.showLabel = false; n.lines = []; n.lw = 0; n.le = 0;
         n.hw = n.r + 3; n.hh = n.r + 3;
@@ -3797,7 +4534,8 @@ function ensureNode(c) {
   const hit = sv('circle', { class: 'hit' });
   const bubble = sv('circle', { class: 'bubble' });
   const label = sv('text', { class: 'label', 'text-anchor': 'middle' });
-  g.append(hit, bubble, label);
+  const tstar = sv('path', { class: 'tstar' });
+  g.append(hit, bubble, tstar, label);
   g.addEventListener('pointerenter', () => { if (!state.pinned) showTip(c.id); cancelHide(); });
   g.addEventListener('pointerleave', () => { if (!state.pinned) scheduleHide(); });
   g.addEventListener('focus', () => { if (!state.pinned) showTip(c.id); });
@@ -3805,7 +4543,7 @@ function ensureNode(c) {
   g.addEventListener('click', e => { e.stopPropagation(); pin(c.id); });
   g.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pin(c.id); } });
   nodesG.append(g);
-  n = { g, hit, bubble, label, cur: null };
+  n = { g, hit, bubble, label, tstar, cur: null };
   nodes.set(c.id, n);
   return n;
 }
@@ -3814,6 +4552,7 @@ function paintNode(c, n, s) {
   n.g.setAttribute('transform', `translate(${s.x.toFixed(1)},${s.y.toFixed(1)})`);
   n.bubble.setAttribute('r', Math.max(0.1, s.r).toFixed(1));
   n.hit.setAttribute('r', Math.max(12, s.r + 6).toFixed(1));
+  if (n.g.classList.contains('target')) { const k = Math.max(6.5, Math.min(10, s.r * 0.55)); n.tstar.setAttribute('d', starPath(s.r * 0.72, -s.r * 0.72, k, k * 0.45)); }
   n.label.setAttribute('y', (s.r + (state.view === 'overview' ? 12 : 14)).toFixed(1));
   for (const ts of n.label.childNodes) ts.setAttribute('y', n.label.getAttribute('y'));
   n.g.style.opacity = s.op.toFixed(3);
@@ -3826,7 +4565,8 @@ function syncNodeStatic(c, n, t) {
   n.bubble.style.stroke = t.nodata ? col : '';
   n.bubble.style.fillOpacity = t.nodata ? '' : '0.88';
   n.g.classList.toggle('nodata', !!t.nodata);
-  const lines = t.lines && t.lines.length ? t.lines : [c.name];
+  n.g.classList.toggle('target', isTarget(c));
+  const lines = t.lines && t.lines.length ? t.lines : [displayName(c)];
   if (n.label.dataset.txt !== lines.join('\n')) {
     n.label.textContent = '';
     lines.forEach((l, i) => { const ts = sv('tspan', { x: 0, dy: i ? '1.15em' : 0 }); ts.textContent = l; n.label.append(ts); });
@@ -3917,7 +4657,8 @@ function renderZoomBar() {
   QUAD_IDS.forEach(id => mk(id, quadName(id), counts[id]));
   const byTier = TIERS.map(t => `${state.companies.filter(c => c.tier === t && passesFilters(c)).length} ${t.toLowerCase()}${t === 'Key player' ? 's' : t === 'Incumbent' ? 's' : 's'}`);
   const priv = state.companies.filter(c => passesFilters(c) && isPrivate(c)).length;
-  $('#count-note').textContent = `${total} of ${state.companies.length} companies shown · ${byTier.join(' · ')} · ${priv} private`;
+  const nT = state.companies.filter(c => passesFilters(c) && isTarget(c)).length;
+  $('#count-note').textContent = `${total} of ${state.companies.length} companies shown · ${byTier.join(' · ')} · ${priv} private · ★ ${nT} thesis targets`;
   $('#quad-desc').textContent = state.view === 'overview'
     ? 'Tip: click a quadrant (or press 1–4) to zoom in; click a bubble to pin its details card.'
     : (state.settings.quadrants[state.view] || {}).desc || '';
@@ -3939,6 +4680,8 @@ function renderLegend() {
     g1.append(el('span', { class: 'item' }, d, document.createTextNode(t)));
   });
   g1.append(el('span', { class: 'item' }, el('span', { class: 'hollow' }), document.createTextNode('no size data')));
+  const sk = sv('svg', { class: 'tstar-key', viewBox: '0 0 14 14' }); sk.append(sv('path', { d: starPath(7, 7.3, 6.5, 2.9), fill: '#fcd3de', stroke: '#17301c', 'stroke-width': 1.1 }));
+  g1.append(el('span', { class: 'item' }, sk, document.createTextNode('thesis-aligned target')));
   lg.append(g1);
 
   const rs = radiusScale(state.view);
@@ -4008,6 +4751,11 @@ function showTip(id, pinned) {
   tip.append(meta);
   if (c.description) tip.append(el('h4', { text: 'What they do' }), el('p', { text: c.description }));
   if (c.businessModel) tip.append(el('h4', { text: 'Business model' }), el('p', { text: c.businessModel }));
+  if (isTarget(c)) {
+    const tv = thesisData().targets[c.name];
+    tip.append(el('div', { class: 'tip-thesis' }, el('div', { class: 'tt', text: `★ Thesis-aligned target · example ${tv.example}: ${tv.exampleName}` }),
+      el('p', null, el('b', { text: 'Why it fits: ' }), document.createTextNode(tv.why)), el('p', null, el('b', { text: 'Check: ' }), document.createTextNode(tv.check))));
+  }
   if (c.impactNote) tip.append(el('h4', { text: 'Impact lens' }), el('p', { text: c.impactNote }));
   const stats = el('div', { class: 'stats' });
   [['employees', 'employees'], ['revenueM', 'revenue / yr'], ['fundingM', 'equity raised']].forEach(([k, lab]) => {
@@ -4798,6 +5546,7 @@ function ago(d) {
 function renderTeamStatus() {
   const p = $('#team-pill'), line = $('#tm-status-line');
   renderBanner();
+  renderThesisBanner();
   if (!team.url) { p.hidden = true; line.textContent = 'Not connected — this browser uses its own copy of the data.'; return; }
   const n = team.pending.length, s = n === 1 ? '' : 's';
   const M = {
@@ -4883,7 +5632,7 @@ function renderStageOptions() {
 }
 /* Collapsible filter panel */
 function activeFilterCount() {
-  return (state.q ? 1 : 0) + (state.tiers.size < TIERS.length ? 1 : 0) + (state.stage !== 'all' ? 1 : 0);
+  return (state.q ? 1 : 0) + (state.tiers.size < TIERS.length ? 1 : 0) + (state.stage !== 'all' ? 1 : 0) + (state.thesisOnly ? 1 : 0);
 }
 function updateFilterBadge() {
   const n = activeFilterCount(), b = $('#filters-badge');
@@ -4891,6 +5640,7 @@ function updateFilterBadge() {
   const parts = [];
   if (state.q) parts.push(`search “${state.q}”`);
   if (state.tiers.size < TIERS.length) parts.push('roles: ' + [...state.tiers].join(', ').toLowerCase());
+  if (state.thesisOnly) parts.push('★ thesis-aligned targets only');
   if (state.stage !== 'all') parts.push($('#f-stage').selectedOptions[0] ? $('#f-stage').selectedOptions[0].text.replace(/\s*\(\d+\)$/, '') : state.stage);
   $('#filter-summary').textContent = parts.length ? 'Active: ' + parts.join(' · ') : 'No filters applied — showing every company.';
   $('#filters-reset').disabled = !parts.length;
@@ -4905,6 +5655,7 @@ function clearFilters() {
   state.q = ''; $('#f-search').value = '';
   state.tiers = new Set(TIERS);
   state.stage = 'all';
+  state.thesisOnly = false; $('#f-thesis').checked = false; $('#f-thesis-chip').classList.remove('off');
   renderTierChips(); renderStageOptions();
   hideTip(true);
   layoutAndRender(true);
@@ -4912,6 +5663,8 @@ function clearFilters() {
 
 function renderAll(animate) {
   renderHeader();
+  renderThesisCard();
+  renderThesisBanner();
   renderTierChips();
   renderStageOptions();
   renderSettingsForm();
@@ -4954,6 +5707,7 @@ function init() {
   $('#export-html').addEventListener('click', exportHtml);
   $('#s-save').addEventListener('click', saveSettings);
   rqForm.addEventListener('submit', submitRq);
+  $('#f-thesis').addEventListener('change', e => { state.thesisOnly = e.target.checked; hideTip(true); layoutAndRender(true); });
   $('#filters-toggle').addEventListener('click', () => setFiltersOpen($('#filter-panel').hidden));
   $('#filters-reset').addEventListener('click', clearFilters);
   if (lsGet('emsMarketMap.filtersOpen', '0') === '1') setFiltersOpen(true);
@@ -4999,6 +5753,7 @@ function init() {
   layoutAndRender(false);
   if (state.needsPersist) { state.needsPersist = false; persist(); }
   if (state.mergedNotice) toast(state.mergedNotice);
+  if (!lsGet('emsMarketMap.teamUrl', '') && !str(state.settings.teamSheetUrl) && thesisUpdatePending()) applyThesisUpdate(true);
   teamInit();
 }
 init();
